@@ -16,7 +16,6 @@
   <script src="js/scripts.js"></script>
   <h1>Hello World!</h1>
   <?php
-
   function connect_db(){
     global $connection;
     $host="localhost";
@@ -27,9 +26,36 @@
     mysqli_query($connection, "SET CHARACTER SET UTF8") or die("Ei saanud baasi utf-8-sse - ".mysqli_error($connection));
   }
 
-  echo "Your IP is: ";
+  connect_db();
 
-  echo $_SERVER["REMOTE_ADDR"];
+  echo "<p>Your IP is: ";
+
+  $ip = $_SERVER["REMOTE_ADDR"];
+
+  echo $ip."<p>";
+
+
+  function addIP ($add, $connection) {
+    $sql = "INSERT INTO abogdan_i244 (ip) VALUES ('$add')";
+    mysqli_query($connection, $sql);
+    echo "<p>Your IP is saved!</p>";
+
+  }
+
+  function IPcount($connection) {
+    $sql = "SELECT COUNT(DISTINCT 'ip') FROM `abogdan_i244`";
+    $result = mysqli_query($connection, $sql);
+    $row = mysqli_fetch_assoc($result);
+    foreach($row as $x=>$y) {
+        echo "<p id=answer>Total ".$y. " different IPs</p>";
+      }
+  }
+
+  addIP($ip, $connection);
+
+  IPcount($connection);
+
+
   ?>
 
   <p>
